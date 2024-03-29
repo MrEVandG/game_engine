@@ -1,0 +1,7 @@
+build
+cmake
+# assets
+res
+
+# the name of the executable i ended up just moving for ease of use in build.sh
+game_engine
