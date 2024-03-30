@@ -29,8 +29,14 @@ int main(int argc, char* argv[]) {
 	if(!Mix_Init(MIX_InitFlags::MIX_INIT_MP3))
 		std::cout << "Mixer Init failed, error: " << Mix_GetError() << std::endl; // Technically just SDL_GetError() WIth a costume but stfu
 
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024); // default everything
-	
+	Sound::openAnyAudioDevice();
+
+	{
+		const std::vector<const char*> devices = Sound::listAudioDevices();
+		for (const char* device : devices) {
+			std::cout << device << std::endl;
+		}
+	}
 
 	bool fullscreen = true;
 	RenderWindow window("Game Engine v0.1", fullscreen);
@@ -40,13 +46,13 @@ int main(int argc, char* argv[]) {
 	
 	// TEXTURES AND STUFF
 	Font font = Font("res/font/roboto.ttf", MINIFIED_FONT_SIZE * (fullscreen * 0.5 + 1)); // W formula ngl
-	std::vector<std::variant<DrawnTexture*,DrawnTexture>> textures = {};
+	std::vector<DrawnTexture> textures = {};
 	
 
 
 	// MUSIC
-	Music music = Music("res/mus/main.mp3");
-	music.play(); // Loops this track indefinitely.
+	Sound::Music music = Sound::Music("res/mus/main.mp3");
+	music.play(0); // Loops this track indefinitely.
 	
 
 	// GAME LOOP
@@ -79,18 +85,8 @@ int main(int argc, char* argv[]) {
 		const float alpha = accumulator / timeStep;
 		
 		window.clear();
-		for (std::variant<DrawnTexture*,DrawnTexture> texture : textures) {
-			struct texVisitor {
-				RenderWindow& window;
-				void operator()(DrawnTexture* texture) const {
-					window.renderTexture(*texture);
-				}
-				void operator()(DrawnTexture& texture) const {
-					window.renderTexture(texture);
-				}
-			};
-			texVisitor visitor = texVisitor({.window = window});
-			std::visit(visitor, texture);
+		for (DrawnTexture& texture : textures) {
+			window.renderTexture(texture);
 		}
 
 		window.renderText(font, "some random text", Vector2f(0.5,0.77), Alignment::Center, {255,255,255});

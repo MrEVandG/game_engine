@@ -1,5 +1,8 @@
 build
 cmake
+
+.vscode
+
 # assets
 res
 

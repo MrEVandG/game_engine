@@ -20,3 +20,14 @@ Updated consistency between header files...
 This consistency fix applies to: `render/DrawnTexture.hpp`, `render/Font.hpp`, `render/RenderWindow.hpp`, and `utils/Sound.hpp`
 
 `utils/Sound.hpp` got another update, adding the ability to get and set volume of a sound.
+
+# 3/29/24 - More Sound Fixes
+
+`utils/Sound.hpp` got yet another update:
+
+- Put every sound-related function in a namespace.
+- Added `open`, `openDevice`, `changeDevice`, `listDevices`, and `close` methods
+
+`main.cpp`:
+
+- Removed the extremely stupid variant from `textures` vector in `main.hpp`
