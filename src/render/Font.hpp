@@ -26,13 +26,13 @@ class Font {
             std::cout << "Attempted to use a closed font" << std::endl; // this is pointless cmd spam but uhhhhhh
         return font;
     }
-    void close(bool setClosed=true) {
+    void close(bool p_setclosed=true) {
         TTF_CloseFont(font);
-        closed = setClosed;
+        closed = p_setclosed;
     }
-    void resize(const int newSize) {
+    void resize(const int p_newsize) {
         close(false);
-        font = TTF_OpenFont(loc, newSize);
+        font = TTF_OpenFont(loc, p_newsize);
     }
     ~Font() {
         if (!closed) {

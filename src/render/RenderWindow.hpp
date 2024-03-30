@@ -59,7 +59,7 @@ class RenderWindow {
             return texture;
         }
 
-        void cleanup() {
+        void cleanUp() {
             SDL_DestroyWindow(window);
         };
 
@@ -79,14 +79,14 @@ class RenderWindow {
             SDL_RenderCopy(renderer, p_entity.getTex(), NULL, &dest);
         }
 
-        void renderText(Font& p_font, const char* p_text, Vector2f pos, Alignment alignment, SDL_Color p_color = { 0, 0, 0}) { // this function is such a waste lmao
+        void renderText(Font& p_font, const char* p_text, Vector2f p_pos, Alignment p_alignment, SDL_Color p_color = { 0, 0, 0}) { // this function is such a waste lmao
             SDL_Surface* text = TTF_RenderText_Solid(p_font.get_font(), p_text, p_color);
             SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, text);
             int texW = 0;
             int texH = 0;
             SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-            int x = pos.x * getSize().x;
-            switch (alignment) {
+            int x = p_pos.x * getSize().x;
+            switch (p_alignment) {
                 case Alignment::Left:
                     break;
                 case Alignment::Center:
@@ -96,7 +96,7 @@ class RenderWindow {
                     x = getSize().x - x - texW;
                     break;
             }
-            int y = pos.y * getSize().y;
+            int y = p_pos.y * getSize().y;
             SDL_Rect dest = { x, y, texW, texH };
             SDL_RenderCopy(renderer, texture, NULL, &dest);
             SDL_FreeSurface(text);

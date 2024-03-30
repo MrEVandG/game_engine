@@ -23,8 +23,8 @@ class DrawnTexture {
         SDL_Rect& getCurrentFrame() {
             return currentFrame;
         };
-        void setPos(Vector2f newPos) {
-            pos = newPos; // easy lmao
+        void setPos(Vector2f p_newpos) {
+            pos = p_newpos; // easy lmao
         }
     private:
         Vector2f size;

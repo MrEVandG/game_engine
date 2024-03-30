@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
 			SDL_Delay(1000 / window.getRefreshRate() - frameTicks);
 		}
 	}
-	window.cleanup();
+	window.cleanUp();
 	font.close();
 	TTF_Quit();
 	SDL_Quit();
