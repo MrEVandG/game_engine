@@ -31,3 +31,10 @@ This consistency fix applies to: `render/DrawnTexture.hpp`, `render/Font.hpp`, `
 `main.cpp`:
 
 - Removed the extremely stupid variant from `textures` vector in `main.hpp`
+
+# 3/29/24 - Forgot some things from last commit
+
+`utils/main.cpp`:
+
+- Forgot to replace some name changes from `utils/Sound.hpp` onto the actual `main` file
+- Forgot to close the audio once the window cleans up

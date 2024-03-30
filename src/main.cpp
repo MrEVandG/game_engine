@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
 	if(!Mix_Init(MIX_InitFlags::MIX_INIT_MP3))
 		std::cout << "Mixer Init failed, error: " << Mix_GetError() << std::endl; // Technically just SDL_GetError() WIth a costume but stfu
 
-	Sound::openAnyAudioDevice();
+	Sound::open();
 
 	{
-		const std::vector<const char*> devices = Sound::listAudioDevices();
+		const std::vector<const char*> devices = Sound::listDevices();
 		for (const char* device : devices) {
 			std::cout << device << std::endl;
 		}
@@ -98,6 +98,7 @@ int main(int argc, char* argv[]) {
 	}
 	window.cleanUp();
 	font.close();
+	Sound::close();
 	TTF_Quit();
 	SDL_Quit();
 	return 0;
