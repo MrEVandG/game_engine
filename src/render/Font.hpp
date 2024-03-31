@@ -9,11 +9,19 @@
 // but it's a little nicer to work with and i think it's just better
 
 enum class Alignment {
+    
+    TopLeft,
+    Top,
+    TopRight,
+    
     Left,
     Center,
-    Right
-};
+    Right,
 
+    BottomLeft,
+    Bottom,
+    BottomRight
+};
 class Font {
     public:
     Font(const char* p_loc, const int p_size): loc(p_loc), size(p_size), closed(false), font(TTF_OpenFont(p_loc, p_size)) {

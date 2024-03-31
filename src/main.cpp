@@ -13,6 +13,7 @@
 #include "render/RenderWindow.hpp"
 #include "render/DrawnTexture.hpp"
 #include "render/Font.hpp"
+#include "nodes/Node.hpp"
 
 #define MINIFIED_FONT_SIZE 25 // For Windowed mode text only. Fullscreen text will be 1.5x the size.
 
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 		std::cout << "SDL Init, error: " << SDL_GetError() << std::endl;
 
-	if (!IMG_Init(IMG_INIT_PNG))
+	if (!IMG_Init(IMG_INIT_JPG))
 		std::cout << "Image Init failed, error:" << SDL_GetError() << std::endl;
 
 	if (TTF_Init())
@@ -38,21 +39,27 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	bool fullscreen = true;
+	bool fullscreen = false;
 	RenderWindow window("Game Engine v0.1", fullscreen);
 	int windowRefreshRate = window.getRefreshRate();
 	std::cout << windowRefreshRate << " max fps" << std::endl;
 	bool gameRunning = true;
+
 	
 	// TEXTURES AND STUFF
 	Font font = Font("res/font/roboto.ttf", MINIFIED_FONT_SIZE * (fullscreen * 0.5 + 1)); // W formula ngl
-	std::vector<DrawnTexture> textures = {};
-	
-
+	Node::NodeScene scene;
+	Node::NodeRect rectNode = Node::NodeRect(
+		Vector2f(0.5,0.5),
+		Vector2f(0.5, 0.5),
+		SDL_Color({.r=255,.g=0,.b=0,.a=255}),
+		Alignment::Center
+	);
+	scene.appendChild(&rectNode);
 
 	// MUSIC
 	Sound::Music music = Sound::Music("res/mus/main.mp3");
-	music.play(0); // Loops this track indefinitely.
+	music.play(16); // Loops this track indefinitely, at volume 16
 	
 
 	// GAME LOOP
@@ -85,11 +92,11 @@ int main(int argc, char* argv[]) {
 		const float alpha = accumulator / timeStep;
 		
 		window.clear();
-		for (DrawnTexture& texture : textures) {
-			window.renderTexture(texture);
-		}
+	
+		scene.render(window);
 
-		window.renderText(font, "some random text", Vector2f(0.5,0.77), Alignment::Center, {255,255,255});
+
+		window.renderText(font, "some random text", Vector2f(0.5,0.5), Alignment::Center, {255,255,255});
 		window.display();
 		int frameTicks = utils::totalTimeMS() - startTicks;
 		if (frameTicks < 1000 / window.getRefreshRate()) {

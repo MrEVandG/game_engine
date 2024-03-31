@@ -71,36 +71,65 @@ class RenderWindow {
             int windowWidth = getSize().x;
             int windowHeight = getSize().y;
             SDL_Rect dest;
-            dest.x = p_entity.getPos().x * windowWidth;
-            dest.y = p_entity.getPos().y * windowHeight;
-            dest.w = p_entity.getSize().x * windowWidth;
-            dest.h = p_entity.getSize().y * windowHeight;
+            dest.x = p_entity.pos.x * windowWidth;
+            dest.y = p_entity.pos.y * windowHeight;
+            dest.w = p_entity.size.x * windowWidth;
+            dest.h = p_entity.size.y * windowHeight;
 
             SDL_RenderCopy(renderer, p_entity.getTex(), NULL, &dest);
         }
 
-        void renderText(Font& p_font, const char* p_text, Vector2f p_pos, Alignment p_alignment, SDL_Color p_color = { 0, 0, 0}) { // this function is such a waste lmao
+        void renderText(Font& p_font, const char* p_text, Vector2f p_pos, Alignment p_alignment, SDL_Color p_color = { 0, 0, 0 }) { // this function is such a waste lmao
             SDL_Surface* text = TTF_RenderText_Solid(p_font.get_font(), p_text, p_color);
             SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, text);
             int texW = 0;
             int texH = 0;
             SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
             int x = p_pos.x * getSize().x;
+            int y = p_pos.y * getSize().y;
             switch (p_alignment) {
+                // top row
+                case Alignment::TopLeft:
+                    break;
+                case Alignment::Top:
+                    x = x - (texW / 2);
+                    break;
+                case Alignment::TopRight:
+                    x = getSize().x - x - texW;
+                    break;
+                // middle row
                 case Alignment::Left:
+                    y = y - (texH / 2);
                     break;
                 case Alignment::Center:
-                    x = x - (texW / 2); // center the text :)
+                    x = x - (texW / 2);
+                    y = y - (texH / 2);
                     break;
                 case Alignment::Right:
                     x = getSize().x - x - texW;
+                    y = y - (texH / 2);
+                    break;
+                // bottom row
+                case Alignment::BottomLeft:
+                    y = getSize().y - y - texH;
+                    break;
+                case Alignment::Bottom:
+                    x = x - (texW / 2);
+                    y = getSize().y - y - texH;
+                    break;
+                case Alignment::BottomRight:
+                    x = getSize().x - x - texW;
+                    y = getSize().y - y - texH;
                     break;
             }
-            int y = p_pos.y * getSize().y;
             SDL_Rect dest = { x, y, texW, texH };
             SDL_RenderCopy(renderer, texture, NULL, &dest);
             SDL_FreeSurface(text);
             SDL_DestroyTexture(texture);
+        }
+
+        SDL_Renderer* getRenderer() {
+            return renderer;
         }
 
         void display() {
