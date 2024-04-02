@@ -106,3 +106,24 @@ This, of course, trickles into all files that require this, namely `render/Drawn
 - Added (or is it removed..?) `.vscode` directory
 
 This 'Node' system will be the framework of this engine, sort of like Godot(except much more inefficient).
+
+# 4/1/24 - NodeImage
+
+A Node for textures.
+
+`utils/Node.hpp`:
+
+- Added a new `NodeImage` node.
+
+All nodes:
+
+- All nodes that can be rendered now have an `Alignment anchorPoint` member property.
+- (this only affects `NodeRect` and `NodeImage` but shut up)
+
+`NodeImage`:
+
+- Constructor takes in a `const char*` for the file location, a `Vector2f` for the position, a `Vector2f` for the size, and a `Alignment` for the anchor point.
+- Default constructor values are: `Position={0,0}`, `Size={1,1}`, `Alignment=TopLeft`
+- Cannot have children
+
+Yep. That's it.

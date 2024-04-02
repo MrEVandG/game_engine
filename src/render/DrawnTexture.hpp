@@ -5,13 +5,9 @@
 
 class DrawnTexture {
     public:
-        DrawnTexture(Vector2f p_pos, Vector2f p_size, SDL_Texture* p_tex)
+        DrawnTexture(SDL_Texture* p_tex, Vector2f p_pos = Vector2f(0,0), Vector2f p_size = Vector2f(1,1))
          : pos(p_pos), size(p_size), tex(p_tex)
         {
-            currentFrame.x = 0;
-            currentFrame.y = 0;
-            currentFrame.w = 1;
-            currentFrame.h = 1;
         }
         SDL_Texture* getTex() {
             return tex;
@@ -21,7 +17,6 @@ class DrawnTexture {
         };
         Vector2f size;
         Vector2f pos;
-        SDL_Rect currentFrame;
     private:
         SDL_Texture* tex;
 };

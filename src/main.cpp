@@ -49,13 +49,17 @@ int main(int argc, char* argv[]) {
 	// TEXTURES AND STUFF
 	Font font = Font("res/font/roboto.ttf", MINIFIED_FONT_SIZE * (fullscreen * 0.5 + 1)); // W formula ngl
 	Node::NodeScene scene;
-	Node::NodeRect rectNode = Node::NodeRect(
-		Vector2f(0.5,0.5),
-		Vector2f(0.5, 0.5),
-		SDL_Color({.r=255,.g=0,.b=0,.a=255}),
-		Alignment::Center
-	);
-	scene.appendChild(&rectNode);
+	{
+		Node::NodeRect rectNode = Node::NodeRect(
+			Vector2f(0.5,0.5),
+			Vector2f(0.5, 0.5),
+			SDL_Color({.r=255,.g=0,.b=0,.a=255}),
+			Alignment::Center
+		);
+		Node::NodeImage imageNode = Node::NodeImage("res/image/test.jpg", window);
+		scene.appendChild(imageNode);
+		scene.appendChild(rectNode);
+	}
 
 	// MUSIC
 	Sound::Music music = Sound::Music("res/mus/main.mp3");
