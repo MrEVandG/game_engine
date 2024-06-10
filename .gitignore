@@ -1,4 +1,6 @@
+# game_engine is the executable moved to the project root directory for easier "access"
 game_engine
+
 debug
 build
 res

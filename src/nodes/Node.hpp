@@ -7,15 +7,19 @@
 #include "../render/Font.hpp"
 #include "../render/RenderWindow.hpp"
 #include "../utils/Math.hpp"
-
+// Stores every type of Node and Node-related utils.
 namespace Node {
 
+    // NodeRect: A node that stores a color, X, Y, Width, Height, and Anchor point for rendering a solid-colored rectangle.
     struct NodeRect {
+        // Instantiate a NodeRect class.
         NodeRect(Vector2f p_pos, Vector2f p_size, SDL_Color p_color = { 255,255,255,255 }, Alignment p_align = Alignment::TopLeft)
          : pos(p_pos), size(p_size), color(p_color), anchorPoint(p_align)
         {
             
         };
+
+        // The built-in render function that displays the data of this Node to the screen every frame.
         void render(RenderWindow& p_window) {
             SDL_SetRenderDrawColor(p_window.getRenderer(), color.r, color.g, color.b, color.a);
             
@@ -74,22 +78,34 @@ namespace Node {
             SDL_RenderFillRect(p_window.getRenderer(), &dest);
             SDL_SetRenderDrawColor(p_window.getRenderer(), 0, 0, 0, 255);
         };
+        // Where the positioning of this NodeRect is centered on.
         Alignment anchorPoint;
+        // The X and Y of the rectangle getting displayed. Influenced by the anchorPoint member.
         Vector2f pos;
+        // The width and height of the rectangle getting displayed.
         Vector2f size;
+        // The solid color of the rectangle getting displayed.
         SDL_Color color;
     };
 
+    // NodeImage: A node that stores a location to a static image file, X, Y, width, height, and alignment.
+    // By default, stretches the image and takes up all space in the screen.
     struct NodeImage {
+        // Instantiate the NodeImage class
         NodeImage(const char* p_loc, RenderWindow& p_window, Vector2f p_pos = Vector2f(0,0), Vector2f p_size = Vector2f(1,1),Alignment p_align=Alignment::TopLeft) 
          : loc(p_loc), pos(p_pos), size(p_size), tex(DrawnTexture(p_window.loadTexture(p_loc))) // This line is awful. I hate using C++.
         {
+            // Set the texture stored lower-level.
             updateTexture(p_window);
         };
+
+        // Refresh the data of the texture stored in this class.
         void updateTexture(RenderWindow& p_window) {
             sdl_tex = p_window.loadTexture(loc);
             tex = DrawnTexture(sdl_tex, pos, size);
         };
+
+        // The built-in render function that displays the data of this Node to the screen every frame.
         void render(RenderWindow& p_window) {            
             int windowWidth = p_window.getSize().x;
             int windowHeight = p_window.getSize().y;
@@ -140,17 +156,25 @@ namespace Node {
             
             p_window.renderTexture(tex);
         };
+        // The point in which this NodeImage is displayed.
         Alignment alignment;
+        // The location of the image file being displayed.
         const char* loc;
+        // The X and Y of this NodeImage getting displayed. Influenced by the alignment member.
         Vector2f pos;
+        // The width and height of this NodeImage.
         Vector2f size;
         private:
+        // You're not supposed to see this! The lowest-level SDL_Texture, stored in the DrawnTexture.
         SDL_Texture* sdl_tex;
+        // You're not supposed to see this! The low-level DrawnTexture, stored in the NodeImage.
         DrawnTexture tex;
     };
 
+    // The type of the different types of nodes, to be used by "renderAllChildren" function.
     typedef std::variant<NodeRect, NodeImage> NodeVariant;
 
+    // Render all children of a node, with a window and the children of the node as input.
     void renderAllChildren(RenderWindow& window, std::vector<NodeVariant> children) {
         for (auto child : children) {
             struct NodeVisitor {
@@ -168,12 +192,18 @@ namespace Node {
         }
     }
 
+    // NodeStruct: The highest-level Node that all nodes derive from. This is a struct, not a class.
     struct NodeScene {
+        // Instantiate a NodeScene
         NodeScene() {};
+        // A vector of children.
         std::vector<NodeVariant> children;
+        // The built-in render function that displays the data of this Node to the screen every frame.
+        // This just runs the "renderAllChildren" function that is used to render all nodes under this one.
         void render(RenderWindow& p_window) {
             renderAllChildren(p_window, children);
         };
+        // Add a Node to this scene's children.
         void appendChild(NodeVariant p_child) {
             children.emplace_back(p_child);
         }

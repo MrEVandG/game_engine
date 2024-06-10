@@ -14,11 +14,14 @@ if ! [ -d ./debug/ ]; then
 fi
 
 echo building...
-if [ $1 == "-d" ]; then
+# build using either debug mode or release mode
+if [ $1 = "-d" ]; then
+    echo build as debug...
     cmake -S . -B debug -DCMAKE_BUILD_TYPE=Debug
     cmake --build debug
     cp $exec_debug_loc .
 else
+    echo build as release...
     cmake -S . -B build
     cmake --build build
     cp $exec_loc .

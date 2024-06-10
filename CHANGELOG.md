@@ -127,3 +127,9 @@ All nodes:
 - Cannot have children
 
 Yep. That's it.
+
+# 6/10/24 - Clean up
+
+It's been too long. Not like anybody is watching this repository; but I lost motivation for a while and thought I might as well try again.
+
+Added comments to every file. This is mainly to help me, the developer, with my Intellisense.

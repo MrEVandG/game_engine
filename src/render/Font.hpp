@@ -24,10 +24,16 @@ enum class Alignment {
 };
 class Font {
     public:
-    Font(const char* p_loc, const int p_size): loc(p_loc), size(p_size), closed(false), font(TTF_OpenFont(p_loc, p_size)) {
-        if (font == NULL) {
-            std::cout << "Could not open font" << std::endl;
-        }
+    Font(const char* p_loc, const int p_size): loc(p_loc), size(p_size), closed(false) {
+        if (FILE *file = fopen(p_loc, "r")) {
+            fclose(file);
+            font = TTF_OpenFont(p_loc, p_size);
+            if (font == NULL) {
+                std::cout << "Failed to load font. Error: " << SDL_GetError() << std::endl;
+            }
+        } else {
+            std::cout << "Font file not found: " << p_loc << std::endl;
+        }   
     }
     TTF_Font* get_font() {
         if (closed)

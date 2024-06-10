@@ -6,7 +6,26 @@ Most of the code from this started from codergopher's amazing 10-video playlist 
 
 ## releases
 
+In order to build this project for yourself, your system must have the following libraries:
+- Standard C/C++ libraries
+- SDL       - Rendering
+- SDL_ttf   - Store and display fonts.
+- SDL_image - Store and display textures.
+- SDLMixer  - Store and display audio data.
+
+In order to install on Debian-based Linux operating systems, run the following command:
+```bash
+sudo apt-get install libsdl libsdl-image1.2-dev libsdl2-ttf-dev libsdl2-mixer-dev
+```
+Sorry, I'm not very experienced with packages, just Google them honestly.
+
+In order to install on Arch-based Linux operating systems, you guys are such massive nerds I probably don't need to give you the command.
+
 Github releases are too confusing to setup even though it probably just takes like 2 minutes, but just clone the repo and build the program yourself.
+
+--- 
+
+oh yes important detail but uhh my program seg faults if it can't find the font file I don't know how to fix it but just find a font
 
 ## please help
 
